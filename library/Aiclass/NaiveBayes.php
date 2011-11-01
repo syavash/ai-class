@@ -206,10 +206,11 @@ class Aiclass_NaiveBayes
 	 */
 	public function calculate($query) {
 		$query = strtoupper(trim($query));
+		// Is query empty? Throw an error!
 		if ($query == '')
 			throw new Aiclass_Exception('You must pass a query to this method.');
-			
-		$qParts = explode(" ", $query);
+
+		// Calculating number of all words in dictionary and also unique word count (dictionarySize).
 		$classes = $this->getClasses();
 		$itemsCount = 0;
 		$allWords = "";
@@ -219,15 +220,30 @@ class Aiclass_NaiveBayes
 			$allWords .= " " . implode(" ", $items);
 		}
 		$dictionarySize = sizeof(array_unique(explode(" ", (trim($allWords)))));
+
+		// Dividends for each class.
 		$dividends = array();
+		
+		// Probability result for each class
 		$probabilities = array();
-		$k = $this->getSmoothingParameter();
+		
+		// Detailed output and detailed TeX output for each class
 		$outputs = array();
 		$texOutputs = array();
-		$outputDivisor = "";
-		$output = "";
+		
+		// Our query separated with space
+		$qParts = explode(" ", $query);
+		
+		// The smoothing parameter.
+		$k = $this->getSmoothingParameter();
+		
+		// The divisor value which is identical for all classes
 		$divisor = 0;
-		$result = array();
+
+		// The detailed output for divisor
+		$outputDivisor = "";
+		
+		// Calculate pribabilities for each class
 		foreach ($classes as $key=>$items) {
 			$allItems = implode(" ", $items);
 			$p = (sizeof($items)+$k)/($itemsCount+($k*sizeof($classes)));
@@ -242,9 +258,11 @@ class Aiclass_NaiveBayes
 		}
 		$outputDivisor = substr($outputDivisor, 0, -1);
 
+		// It seems we have a division by zero as a word in the query doesn't exist in any class and smoothing parameter is 0.
 		if ($divisor == 0)
 			throw new Aiclass_Exception("Not enough datasets for classification.");
 		
+		// Fill results array.
 		foreach ($devindends as $key=>$devindend)
 		{
 			$probabilities[$key] = round($devindend / $divisor, $this->getPrecision());

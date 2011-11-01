@@ -36,8 +36,8 @@ ANOTHER RAINY DAY
 			<div class="spacer"></div>
 			<dl>
 				<dt><label for="smoothingParameter">Smoothing Parameter: </label></dt>
-				<dd><input type="text" name="smoothingParameter" id="smoothingParameter" value="<?=!empty($_POST['smoothingParameter']) ? $_POST['smoothingParameter'] : '1'?>" /></dd>
-				<dt><label for="query">Query: </label></dt><dd><input value="<?=!empty($_POST['query']) ? $_POST['query'] : 'Perfect Storm'?>" type="text" name="query" id="query" /></dd>
+				<dd><input type="text" name="smoothingParameter" id="smoothingParameter" value="<?=array_key_exists('smoothingParameter', $_POST) ? $_POST['smoothingParameter'] : '1'?>" /></dd>
+				<dt><label for="query">Query: </label></dt><dd><input value="<?=array_key_exists('query', $_POST) ? $_POST['query'] : 'Perfect Storm'?>" type="text" name="query" id="query" /></dd>
 			</dl>
 			<input type="submit" class="submit-button" value="Calculate Probabilities!" />
 		</form>
@@ -55,9 +55,10 @@ ANOTHER RAINY DAY
 					->setSmoothingParameter($_POST['smoothingParameter'])
 					->setPrecision(4);
 				
-				echo '<div class="result"><h2>Results</h2>Hover over each highlighted statement to see details.';
+				echo '<div class="result"><h2>Results</h2>';
 				try {
 					$nb->calculate($_POST['query']);
+					echo 'Hover over each highlighted statement to see details.';
 					foreach ($nb->getClasses() as $key=>$class) {
 						echo '<h3>' . strtoupper($key) . '</h3><ul>'.
 								'<li><b>Probability:</b> <pre>' . $nb->getProbability($key) . '</pre></li>'.
