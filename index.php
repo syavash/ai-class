@@ -12,7 +12,9 @@
 	<body>
 		<h1>AI-CLASS.COM - Bayes Network <span>By <a href="http://syavash.com">Siavash Mahmoudian</a></span></h1>
 		<div class="desc">
-		This tool is created based on Bayes Network lesson in Unit 5 of <a href="http://ai-class.com">ai-class.com</a>.
+		This tool is created based on Bayes Network lesson in Unit 5 of <a href="http://ai-class.com">ai-class.com</a>.<br />
+		You can find the PHP sourcecode on <a href="https://github.com/syavash/ai-class/">github.com</a>.
+		The main calculation class is <a href="https://github.com/syavash/ai-class/blob/master/library/Aiclass/NaiveBayes.php">Aiclass_NaiveBayes</a>.
 		</div>
 		<form action="?" method="post">
 			<div class="column">
@@ -48,10 +50,10 @@ ANOTHER RAINY DAY
 				$classB = explode("\n", $_POST['classB']);
 
 				$nb = new Aiclass_NaiveBayes();
-				$nb->addClass("movie", $classA);
-				$nb->addClass("song", $classB);
-				$nb->setSmoothingParameter($_POST['smoothingParameter']);
-				$nb->setPrecision(4);
+				$nb->addClass("movie", $classA)
+					->addClass("song", $classB)
+					->setSmoothingParameter($_POST['smoothingParameter'])
+					->setPrecision(4);
 				
 				echo '<div class="result"><h2>Results</h2>Hover over each highlighted statement to see details.';
 				try {
